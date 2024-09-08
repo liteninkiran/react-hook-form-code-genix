@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form';
 
 export const Users = () => {
-  const { register, formState: { errors } } = useForm<{ email: string }>();
+  const { register, formState: { errors } } = useForm<{ email: string }>({ mode: 'all' });
   return (
     <>
       <input {...register('email', {
