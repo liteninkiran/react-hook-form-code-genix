@@ -1,4 +1,4 @@
-import Users from './components/Users';
+import { Users } from './users/components/Users';
 
 export const App = () => {
   return (<Users />);
