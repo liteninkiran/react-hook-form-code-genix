@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form';
 
 export const Users = () => {
-  const { register } = useForm<{ email: string }>();
+  const { register, formState: { errors } } = useForm<{ email: string }>();
   return (
     <>
       <input {...register('email', {
@@ -12,10 +12,10 @@ export const Users = () => {
         maxLength: {
           value: 10,
           message: 'Too many characters',
-        }
+        },
       })} placeholder='Email' />
       <p>
-        {}
+        {errors.email?.message}
       </p>
     </>
   );
