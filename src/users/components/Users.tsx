@@ -1,9 +1,17 @@
 import { useForm } from 'react-hook-form';
 
 export const Users = () => {
-  const { register, formState: { errors } } = useForm<{ email: string }>({ mode: 'all' });
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+  } = useForm<{ email: string }>({ mode: 'all' });
+  const onSubmit = () => {
+
+    console.log('Submit');
+  }
   return (
-    <>
+    <form onSubmit={handleSubmit(onSubmit)}>
       <input {...register('email', {
         required: {
           value: true,
@@ -17,6 +25,6 @@ export const Users = () => {
       <p>
         {errors.email?.message}
       </p>
-    </>
+    </form>
   );
 }
