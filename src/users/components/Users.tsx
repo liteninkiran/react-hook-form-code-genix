@@ -1,30 +1,16 @@
 import { useForm } from 'react-hook-form';
+import { TextField } from '@mui/material';
+import { schema, Schema } from '../types/schema';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 export const Users = () => {
-  const {
-    register,
-    formState: { errors },
-    handleSubmit,
-  } = useForm<{ email: string }>({ mode: 'all' });
-  const onSubmit = () => {
-
-    console.log('Submit');
-  }
+  const { register } = useForm<Schema>({
+    mode: 'all',
+    resolver: zodResolver(schema),
+  });
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <input {...register('email', {
-        required: {
-          value: true,
-          message: 'Email is required',
-        },
-        maxLength: {
-          value: 10,
-          message: 'Too many characters',
-        },
-      })} placeholder='Email' />
-      <p>
-        {errors.email?.message}
-      </p>
-    </form>
+    <>
+      <TextField {...register('email')} />
+    </>
   );
 }
