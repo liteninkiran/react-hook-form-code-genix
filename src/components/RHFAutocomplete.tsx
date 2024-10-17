@@ -23,7 +23,7 @@ export const RHFAutocomplete = <T extends FieldValues>({
       render={({ field: { value, onChange, ref }, fieldState: { error } }) => (
         <Autocomplete
           options={options}
-          value={value?.map((id: string) =>
+          value={value.map((id: string) =>
             options.find((item) => item.id === id)
           )}
           getOptionLabel={(option) =>
@@ -43,16 +43,20 @@ export const RHFAutocomplete = <T extends FieldValues>({
               label={label}
             />
           )}
-          renderOption={(props, option, { selected }) => (
-            <Box component={'li'} {...props}>
-              <Checkbox
-                icon={<CheckBoxOutlineBlankIcon />}
-                checkedIcon={<CheckBoxIcon />}
-                checked={selected}
-              />
-              {option.label}
-            </Box>
-          )}
+          renderOption={(props, option, { selected }) => {
+            const { key, ...rest } = props;
+            return (
+              <Box component={'li'} {...rest} key={key}>
+                <Checkbox
+                  icon={<CheckBoxOutlineBlankIcon />}
+                  checkedIcon={<CheckBoxIcon />}
+                  checked={selected}
+                  key={key}
+                />
+                {option.label}
+              </Box>
+            );
+          }}
           disableCloseOnSelect
           multiple
         />

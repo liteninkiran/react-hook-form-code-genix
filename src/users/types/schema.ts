@@ -13,3 +13,9 @@ export const schema = z.object({
 });
 
 export type Schema = z.infer<typeof schema>;
+
+export const defaultValues: Schema = {
+  email: '',
+  name: '',
+  states: [],
+}
