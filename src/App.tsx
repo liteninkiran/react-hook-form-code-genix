@@ -1,5 +1,5 @@
-import { Users } from './users/components/Users';
+import { UsersProvider } from './users/components/UsersProvider';
 
 export const App = () => {
-  return (<Users />);
+  return (<UsersProvider />);
 }

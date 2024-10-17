@@ -1,13 +1,17 @@
-import { Controller } from 'react-hook-form';
-import { Autocomplete, AutocompleteRenderInputParams as Params, TextField } from '@mui/material';
+import { Controller, useFormContext } from 'react-hook-form';
+import { Autocomplete } from '@mui/material';
 
-export const RHFAutocomplete = () => {
-  const render = (params: Params) => (<TextField {...params} label='States' />);
+type Props = {
+	name: string;
+}
+
+export const RHFAutocomplete = ({ name }: Props) => {
+	const { control } = useFormContext();
 	return (
 		<Controller
 			control={control}
 			name={name}
-			render={(params) => <Autocomplete options={params.states} renderInput={render} />}
+			render={(params) => <Autocomplete />}
 		/>
 	);
 }
