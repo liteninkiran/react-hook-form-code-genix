@@ -2,10 +2,11 @@ import { useFormContext } from 'react-hook-form';
 import { Stack, TextField } from '@mui/material';
 import { Schema } from '../types/schema';
 import { RHFAutocomplete } from '../../components/RHFAutocomplete';
-import { Option } from '../../types/option';
 import { useEffect } from 'react';
+import { useStates } from '../services/queries';
 
 export const Users = () => {
+  const statesQuery = useStates();
   const {
     register,
     formState: { errors },
@@ -31,16 +32,15 @@ export const Users = () => {
     error: !!errors.email,
     helperText: errors.email?.message,
   };
-  const states: Option[] = [
-    { id: '1', label: 'California' },
-    { id: '2', label: 'Ohio' },
-    { id: '3', label: 'Texas' },
-  ];
   return (
     <Stack sx={{ gap: 2 }}>
       <TextField {...nameProps} />
       <TextField {...emailProps} />
-      <RHFAutocomplete<Schema> name="states" label="States" options={states} />
+      <RHFAutocomplete<Schema>
+        name="states"
+        label="States"
+        options={statesQuery.data}
+      />
     </Stack>
   );
 };
