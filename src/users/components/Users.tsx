@@ -1,14 +1,16 @@
 import { useFormContext } from 'react-hook-form';
 import { Stack, TextField } from '@mui/material';
 import { Schema } from '../types/schema';
-import { RHFAutocomplete } from '../../components/RHFAutocomplete';
 import { useEffect } from 'react';
-import { useStates, useLanguages } from '../services/queries';
+import { useStates, useLanguages, useGenders } from '../services/queries';
+import { RHFAutocomplete } from '../../components/RHFAutocomplete';
 import { RHFToggleButtonGroup } from '../../components/RHFToggleButtonGroup';
+import { RHFRadioGroup } from '../../components/RHFRadioGroup';
 
 export const Users = () => {
   const statesQuery = useStates();
   const languagesQuery = useLanguages();
+  const gendersQuery = useGenders();
   const {
     register,
     formState: { errors },
@@ -46,6 +48,11 @@ export const Users = () => {
       <RHFToggleButtonGroup<Schema>
         name="languagesSpoken"
         options={languagesQuery.data}
+      />
+      <RHFRadioGroup<Schema>
+        name="gender"
+        label="Gender"
+        options={gendersQuery.data}
       />
     </Stack>
   );
