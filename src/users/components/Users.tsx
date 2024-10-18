@@ -3,12 +3,22 @@ import { Stack, TextField } from '@mui/material';
 import { Schema } from '../types/schema';
 import { RHFAutocomplete } from '../../components/RHFAutocomplete';
 import { Option } from '../../types/option';
+import { useEffect } from 'react';
 
 export const Users = () => {
   const {
     register,
     formState: { errors },
+    watch,
   } = useFormContext<Schema>();
+  useEffect(() => {
+    const sub = watch((value) => {
+      console.log(value);
+    });
+    return () => {
+      sub.unsubscribe();
+    };
+  }, [watch]);
   const nameProps = {
     ...register('name'),
     label: 'Name',
