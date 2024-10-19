@@ -1,7 +1,7 @@
 import { useFieldArray, useFormContext, useWatch } from 'react-hook-form';
 import { Button, Stack, Typography } from '@mui/material';
 import { Schema } from '../types/schema';
-import { useEffect } from 'react';
+import { Fragment, useEffect } from 'react';
 import {
   useStates,
   useLanguages,
@@ -23,7 +23,7 @@ export const Users = () => {
   const languagesQuery = useLanguages();
   const gendersQuery = useGenders();
   const skillsQuery = useSkills();
-  const { watch, control } = useFormContext<Schema>();
+  const { watch, control, unregister } = useFormContext<Schema>();
 
   useEffect(() => {
     const sub = watch((value) => {
@@ -36,10 +36,19 @@ export const Users = () => {
 
   const isTeacher = useWatch({ control, name: 'isTeacher' });
 
-  const { append } = useFieldArray({
+  const { append, fields, remove, replace } = useFieldArray({
     control,
     name: 'students',
   });
+
+  const clearStudents = () => {
+    if (!isTeacher) {
+      replace([]);
+      unregister('students');
+    }
+  };
+
+  useEffect(clearStudents, [isTeacher, replace, unregister]);
 
   return (
     <Stack sx={{ gap: 2 }}>
@@ -98,6 +107,21 @@ export const Users = () => {
           Add new student
         </Button>
       )}
+
+      {fields.map((field, index) => (
+        <Fragment key={field.id}>
+          <RHFTextField<Schema> name={`students.${index}.name`} label="Name" />
+          <Button
+            color="error"
+            onClick={() => {
+              remove(index);
+            }}
+            type="button"
+          >
+            Remove
+          </Button>
+        </Fragment>
+      ))}
     </Stack>
   );
 };
