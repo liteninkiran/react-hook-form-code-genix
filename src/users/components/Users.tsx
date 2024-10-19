@@ -1,5 +1,5 @@
 import { useFormContext } from 'react-hook-form';
-import { Stack, TextField, Typography } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 import { Schema } from '../types/schema';
 import { useEffect } from 'react';
 import {
@@ -16,17 +16,14 @@ import { RHFDateTimePicker } from '../../components/RHFDateTimePicker';
 import { RHFDateRangePicker } from '../../components/RHFDateRangePicker';
 import { RHFSlider } from '../../components/RHFSlider';
 import { RHFSwitch } from '../../components/RHFSwitch';
+import { RHFTextField } from '../../components/RHFTextField';
 
 export const Users = () => {
   const statesQuery = useStates();
   const languagesQuery = useLanguages();
   const gendersQuery = useGenders();
   const skillsQuery = useSkills();
-  const {
-    register,
-    formState: { errors },
-    watch,
-  } = useFormContext<Schema>();
+  const { watch } = useFormContext<Schema>();
   useEffect(() => {
     const sub = watch((value) => {
       console.log(value);
@@ -35,22 +32,10 @@ export const Users = () => {
       sub.unsubscribe();
     };
   }, [watch]);
-  const nameProps = {
-    ...register('name'),
-    label: 'Name',
-    error: !!errors.name,
-    helperText: errors.name?.message,
-  };
-  const emailProps = {
-    ...register('email'),
-    label: 'Email',
-    error: !!errors.email,
-    helperText: errors.email?.message,
-  };
   return (
     <Stack sx={{ gap: 2 }}>
-      <TextField {...nameProps} />
-      <TextField {...emailProps} />
+      <RHFTextField<Schema> name="name" label="Name" />
+      <RHFTextField<Schema> name="email" label="Email" />
       <RHFAutocomplete<Schema>
         name="states"
         label="States"
