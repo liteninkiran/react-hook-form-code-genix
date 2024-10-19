@@ -15,6 +15,7 @@ import { RHFCheckbox } from '../../components/RHFCheckbox';
 import { RHFDateTimePicker } from '../../components/RHFDateTimePicker';
 import { RHFDateRangePicker } from '../../components/RHFDateRangePicker';
 import { RHFSlider } from '../../components/RHFSlider';
+import { RHFSwitch } from '../../components/RHFSwitch';
 
 export const Users = () => {
   const statesQuery = useStates();
@@ -76,6 +77,7 @@ export const Users = () => {
       <Typography>Former Employment Period:</Typography>
       <RHFDateRangePicker<Schema> name="formerEmploymentPeriod" />
       <RHFSlider<Schema> name="salaryRange" label="Salary Range" />
+      <RHFSwitch<Schema> name="isTeacher" label="Are you a teacher?" />
     </Stack>
   );
 };
