@@ -1,4 +1,9 @@
-import { useFieldArray, useFormContext, useWatch } from 'react-hook-form';
+import {
+  SubmitHandler,
+  useFieldArray,
+  useFormContext,
+  useWatch,
+} from 'react-hook-form';
 import {
   Button,
   Container,
@@ -29,6 +34,7 @@ import { RHFDateRangePicker } from '../../components/RHFDateRangePicker';
 import { RHFSlider } from '../../components/RHFSlider';
 import { RHFSwitch } from '../../components/RHFSwitch';
 import { RHFTextField } from '../../components/RHFTextField';
+import { useCreateUser, useEditUser } from '../services/mutations';
 
 export const Users = () => {
   // Hooks
@@ -37,15 +43,18 @@ export const Users = () => {
   const gendersQuery = useGenders();
   const skillsQuery = useSkills();
   const usersQuery = useUsers();
-  const { watch, control, unregister, reset, setValue } =
+  const { watch, control, unregister, reset, setValue, handleSubmit } =
     useFormContext<Schema>();
   const id = useWatch({ control, name: 'id' });
+  const variant = useWatch({ control, name: 'variant' });
   const isTeacher = useWatch({ control, name: 'isTeacher' });
   const userQuery = useUser(id);
   const { append, fields, remove, replace } = useFieldArray({
     control,
     name: 'students',
   });
+  const createUserMutation = useCreateUser();
+  const editUserMutation = useEditUser();
 
   // Effect Callbacks
   const subWatch = () => {
@@ -74,9 +83,18 @@ export const Users = () => {
   // Event Handlers
   const handleReset = () => reset(defaultValues);
   const handleUserClick = (id: string) => setValue('id', id);
+  const onSubmit: SubmitHandler<Schema> = (data) =>
+    variant === 'create'
+      ? createUserMutation.mutate(data)
+      : editUserMutation.mutate(data);
 
   return (
-    <Container maxWidth="sm" component="form" sx={{ mt: 3 }}>
+    <Container
+      maxWidth="sm"
+      component="form"
+      sx={{ mt: 3 }}
+      onSubmit={handleSubmit(onSubmit)}
+    >
       <Stack sx={{ flexDirection: 'row', gap: 2 }}>
         <List subheader={<ListSubheader>Users</ListSubheader>}>
           {usersQuery.data?.map((user) => (
