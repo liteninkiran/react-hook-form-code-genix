@@ -186,7 +186,7 @@ export const Users = () => {
 
           <Stack sx={{ flexDirection: 'row', justifyContent: 'space-between' }}>
             <Button variant="contained" type="submit">
-              Submit
+              {variant === 'create' ? 'Create' : 'Update'}
             </Button>
             <Button onClick={handleReset}>Reset</Button>
           </Stack>

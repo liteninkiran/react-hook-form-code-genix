@@ -1,12 +1,14 @@
 import axios from 'axios';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Schema } from '../types/schema';
+import { omit } from 'lodash';
+import { mapData } from '../utils/mapData';
 
 const baseUrl = 'http://localhost:8080/users';
 
 export function useCreateUser() {
   const queryClient = useQueryClient();
-  const mutationFn = async (data: Schema) => await axios.post(baseUrl, data);
+  const mutationFn = async (data: Schema) => await axios.post(baseUrl, omit(mapData(data), 'variant'));
   const onSuccess = async () => {
     await queryClient.invalidateQueries({ queryKey: ['users'] });
     alert('User created!');
@@ -19,7 +21,7 @@ export function useEditUser() {
   const mutationFn = async (data: Schema) => {
     if (data.variant === 'edit') {
       const url = `${baseUrl}/${data.id}`;
-      await axios.put(url, data);
+      await axios.put(url, omit(mapData(data), 'variant'));
       alert('User edited successfully!');
     }
   }
